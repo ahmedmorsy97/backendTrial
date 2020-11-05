@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-// `mongodb://${process.env.MONGO_USERNAME}:${encodeURIComponent(
+// `mongodb:
+//${process.env.MONGO_USERNAME}:${encodeURIComponent(
 //     process.env.MONGO_PASSWORD
 //   )}@mongo-payment:27017/Trial`
 
