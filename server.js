@@ -1,6 +1,6 @@
 import "./api/db/mongoose.js";
 import mongoose from "mongoose";
-import { Todo } from "./api/models/todo.js";
+import { Todo } from "./api/models";
 
 import express, { json, urlencoded } from "express";
 import cors from "cors";
