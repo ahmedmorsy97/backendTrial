@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 
+// `mongodb://${process.env.MONGO_USERNAME}:${encodeURIComponent(
+//     process.env.MONGO_PASSWORD
+//   )}@mongo-payment:27017/Trial`
+
 const url = "mongodb://localhost:27017/Trial";
 const URI =
   `${process.env.NODE_ENV}` === "production"
-    ? `mongodb://${process.env.MONGO_USERNAME}:${encodeURIComponent(
-        process.env.MONGO_PASSWORD
-      )}@mongo-payment:27017/Trial`
+    ? `mongodb+srv://trialUser:${process.env.MognoDB_Password}@trial.kzrgi.mongodb.net/Trial?retryWrites=true&w=majority`
     : url;
 (async () => {
   try {
