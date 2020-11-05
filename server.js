@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 // app.post("/api/todos", todo);
 
 app.post("/api/todos/create", (req, res) => {
-  if (!req.body?.text) {
+  if (!req.body.text) {
     res.status(400).send({
       err: "text feild is required !",
     });
@@ -79,7 +79,7 @@ app.get("/api/todos/readAll", (req, res) => {
 });
 
 app.get("/api/todos/readOne/:todoId", (req, res) => {
-  if (!req.params?.todoId) {
+  if (!req.params.todoId) {
     res.status(400).send({
       err: "todoId is required !",
     });
