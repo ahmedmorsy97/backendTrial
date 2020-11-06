@@ -1,6 +1,7 @@
 import { authJWT } from "../services";
 import { errorName } from "../constants";
 import { sendError } from "../factories";
+import { User } from "../models";
 
 export const authorize = (userTypes) => (req, res, next) => {
   try {
@@ -24,4 +25,25 @@ export const authorize = (userTypes) => (req, res, next) => {
   } catch (error) {
     sendError(res, error);
   }
+};
+
+export const authenticate = (req, res, next) => {
+  const token = req.header("x-auth");
+
+  User.findByToken(token)
+    .then((user) => {
+      if (!user) {
+        throw {
+          message: "No user with this id !",
+        };
+      }
+      req.user = user;
+      req.token = token;
+      next();
+    })
+    .catch((err) => {
+      res.status(401).send({
+        err: err.message ? err.message : err,
+      });
+    });
 };

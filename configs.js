@@ -1,3 +1,6 @@
-const secretOrPrivateKey = "secretOrPrivateKey";
+const secretOrPrivateKey =
+  `${process.env.NODE_ENV}` === "production"
+    ? process.env.JWT_SECRET
+    : "secretOrPrivateKey";
 
 export { secretOrPrivateKey };

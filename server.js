@@ -5,7 +5,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import hbs from "hbs";
 import fs from "fs";
-import { todo } from "./api/routes/todo";
+import { todo, user } from "./api/routes";
+import { authenticate } from "./api/middlewares";
 
 const port = process.env.PORT || 5000;
 var app = express();
@@ -40,7 +41,8 @@ app.get("/", (req, res) => {
   res.send("<h1>Welcome to trial app</h1>");
 });
 
-app.use("/api/todos", todo);
+app.use("/api/todos", authenticate, todo);
+app.use("/api/users", user);
 
 app.use((req, res) =>
   res.status(404).send("<h1>Can not find what you're looking for</h1>")

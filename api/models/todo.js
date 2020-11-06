@@ -23,9 +23,9 @@ const schema = new Schema({
   completedAt: {
     type: Date,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  _creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
   },
 });
 

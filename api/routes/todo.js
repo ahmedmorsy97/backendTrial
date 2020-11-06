@@ -1,6 +1,7 @@
 import { Router } from "express";
 import mongoose from "mongoose";
 import { Todo } from "../models";
+import _ from "lodash";
 
 const router = Router();
 
@@ -12,6 +13,7 @@ router.post("/create", (req, res) => {
   }
   new Todo({
     text: req.body.text,
+    _creator: req.user._id,
   })
     .save()
     .then((todo) => {
@@ -25,9 +27,11 @@ router.post("/create", (req, res) => {
 });
 
 router.get("/readAll", (req, res) => {
-  Todo.find()
+  Todo.find({ _creator: req.user._id })
     .then(async (todos) => {
-      const count = await Todo.estimatedDocumentCount();
+      const count = await Todo.find({
+        _creator: req.user._id,
+      }).count();
       res.status(200).send({ todos, count });
     })
     .catch((err) => {
@@ -50,7 +54,7 @@ router.get("/readOne/:todoId", (req, res) => {
     });
   }
 
-  Todo.findById(todoId)
+  Todo.findOne({ _id: todoId, _creator: req.user._id })
     .then((todo) => {
       if (!todo) {
         throw {
@@ -66,7 +70,7 @@ router.get("/readOne/:todoId", (req, res) => {
     });
 });
 
-router.delete("/deletOne/:todoId", (req, res) => {
+router.post("/delete/:todoId", (req, res) => {
   if (!req.params.todoId) {
     res.status(400).send({
       err: "todoId is required !",
@@ -79,7 +83,7 @@ router.delete("/deletOne/:todoId", (req, res) => {
     });
   }
 
-  Todo.findByIdAndRemove(todoId)
+  Todo.findOneAndRemove({ _id: todoId, _creator: req.user._id })
     .then((todo) => {
       if (!todo) {
         throw {
@@ -89,6 +93,47 @@ router.delete("/deletOne/:todoId", (req, res) => {
       res.status(200).send({
         todo,
         message: `Todo with text " ${todo.text} " has been deleted successfully !!`,
+      });
+    })
+    .catch((err) => {
+      res.status(400).send({
+        err: err.message ? err.message : err,
+      });
+    });
+});
+
+router.post("/update/:todoId", (req, res) => {
+  if (!req.params.todoId) {
+    res.status(400).send({
+      err: "todoId is required !",
+    });
+  }
+  const todoId = req.params.todoId;
+  //   const body = _.pick(req.body, ["text", "completed"]);
+  if (!mongoose.isValidObjectId(todoId)) {
+    res.status(400).send({
+      err: "todoId is not a valid objectId !",
+    });
+  }
+
+  if (req.body._id) delete req.body._id;
+
+  Todo.findOneAndUpdate(
+    { _id: todoId, _creator: req.user._id },
+    { $set: req.body },
+    {
+      new: true,
+    }
+  )
+    .then((todo) => {
+      if (!todo) {
+        throw {
+          message: "No todo with this id !",
+        };
+      }
+      res.status(200).send({
+        todo,
+        message: `Todo with text " ${todo.text} " has been updated successfully !!`,
       });
     })
     .catch((err) => {
