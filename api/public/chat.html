@@ -11,7 +11,6 @@
   </head>
   <body class="chat">
     <div class="chat__sidebar">
-      <h3>Chat Room</h3>
       <h3 id="roomName">Room</h3>
       <div id="users"></div>
     </div>
@@ -34,7 +33,7 @@
     </div>
 
     <script id="message-template" type="text/template">
-      <li class="message">
+      <li class="{{class}}">
           <div class="message__title">
               <h4>{{from}}</h4>
               <span>{{createdAt}}</span>
@@ -46,7 +45,7 @@
     </script>
 
     <script id="location-message-template" type="text/template">
-      <li class="message">
+      <li class="{{class}}">
           <div class="message__title">
               <h4>{{from}}</h4>
               <span>{{createdAt}}</span>

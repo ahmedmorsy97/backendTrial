@@ -64,6 +64,8 @@ socket.on("newMessage", function (data) {
     text,
     from,
     createdAt: formattedTime,
+    class:
+      params.name.trim() === from.trim() ? "message yourMessage" : "message",
   });
 
   jQuery("#messages").append(html);
@@ -139,6 +141,8 @@ socket.on("newLocationMessage", function (data) {
     from,
     url,
     createdAt: formattedTime,
+    class:
+      params.name.trim() === from.trim() ? "message yourMessage" : "message",
   });
   jQuery("#messages").append(html);
   scrollToBottom();

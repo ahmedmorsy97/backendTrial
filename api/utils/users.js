@@ -24,4 +24,9 @@ export class Users {
     const namesArray = userList.map((el) => el.name);
     return namesArray;
   }
+
+  checkUserName(name) {
+    const userList = this.users.filter((el) => el.name === name);
+    return userList.length > 0 ? true : false;
+  }
 }

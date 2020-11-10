@@ -46,10 +46,13 @@ io.on("connection", (socket) => {
     if (!(isRealString(params.name) && isRealString(params.room))) {
       callback("Invalid params");
     }
+    if (users.checkUserName(params.name.trim())) {
+      callback("Name already taken");
+    }
 
     socket.join(params.room);
     users.removeUser(socket.id);
-    users.addUser(socket.id, params.name, params.room);
+    users.addUser(socket.id, params.name.trim(), params.room.trim());
 
     // io.emit (emit to all) -> io.to(room).emit
     // socket.broadcast.emit (emit to all except me) -> socket.broadcast.to(room).emit
