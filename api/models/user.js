@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { secretOrPrivateKey } from "../../configs";
 import _ from "lodash";
 import bcrypt from "bcryptjs";
+import moment from "moment";
 
 const { Schema } = mongoose;
 const AutoIncrement = mongoose_sequence(mongoose);
@@ -21,6 +22,10 @@ const schema = new Schema(
       type: Boolean,
       default: false,
     },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
     password: String,
     phoneNumber: {
       type: String,
@@ -31,7 +36,9 @@ const schema = new Schema(
       unique: true,
     },
     birthDate: Date,
-    gender: String,
+    gender: { type: String, enum: ["male", "female", "other"] },
+    firstName: String,
+    lastName: String,
     email: {
       type: String,
       index: true,
@@ -46,6 +53,10 @@ const schema = new Schema(
         message: (props) => `${props.value} is not a valid email!`,
       },
     },
+    rating: {
+      type: Number,
+      default: 5,
+    },
     tokens: [
       {
         access: {
@@ -56,6 +67,46 @@ const schema = new Schema(
           type: String,
           required: true,
         },
+      },
+    ],
+    waitingListHistory: [
+      {
+        place: {
+          type: mongoose.Types.ObjectId,
+          ref: "Places",
+        },
+        rating: {
+          type: Number,
+        },
+        comment: {
+          type: String,
+        },
+        attendance: {
+          type: String,
+          enum: ["attended", "left", "missed"],
+        },
+        name: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        createdAt: {
+          type: Date,
+          defaut: moment().valueOf(),
+        },
+      },
+    ],
+    favoratePlaces: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Places",
+        autopopulate: true,
+      },
+    ],
+    waitingLists: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Places",
       },
     ],
   },
@@ -81,7 +132,18 @@ schema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
 
-  return _.pick(userObject, ["_id", "email"]);
+  return _.pick(userObject, [
+    "_id",
+    "email",
+    "phoneNumber",
+    "favoratePlaces",
+    "waitingLists",
+    "emailConfirmed",
+    "rating",
+    "userType",
+    "waitingListHistory",
+    "userId",
+  ]);
 };
 
 schema.methods.generateAuthToken = function () {

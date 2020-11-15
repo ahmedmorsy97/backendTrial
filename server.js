@@ -5,7 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import hbs from "hbs";
 import fs from "fs";
-import { todo, user } from "./api/routes";
+import { todo, user, place } from "./api/routes";
 import { authenticate } from "./api/middlewares";
 
 import path from "path";
@@ -145,6 +145,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/todos", authenticate, todo);
+app.use("/api/places", place);
 app.use("/api/users", user);
 
 app.use((req, res) =>
