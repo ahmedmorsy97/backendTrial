@@ -16,7 +16,7 @@ Router.events.on("routeChangeError", () => NProgress.done());
 const Layout = (props) => {
   axios.defaults.baseURL =
     process.env.NODE_ENV === "production"
-      ? `${process.env.PUBLIC_URL}/api`
+      ? "https://damp-waters-55084.herokuapp.com//api"
       : "http://localhost:5000/api";
   return (
     <>
