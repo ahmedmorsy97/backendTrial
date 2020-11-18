@@ -157,7 +157,11 @@ const Home = (props) => {
 };
 
 export async function getServerSideProps(params) {
-  const res = await axios.get("/places/readAll", {
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://damp-waters-55084.herokuapp.com/api"
+      : "http://localhost:5000/api";
+  const res = await axios.get(baseUrl + "/places/readAll", {
     page: 1,
     limit: 10,
   });
