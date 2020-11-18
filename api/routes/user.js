@@ -8,6 +8,14 @@ import { compare } from "bcryptjs";
 const router = Router();
 
 router.post("/register", (req, res) => {
+  const cookie = req.cookies.userLogin;
+
+  if (cookie) {
+    return res.status(400).send({
+      err: "You are already logged In!",
+    });
+  }
+
   if (!req.body.email) {
     return res.status(400).send({
       err: "email feild is required !",
@@ -52,6 +60,7 @@ router.post("/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
+      res.cookie("userLogin", token, { httpOnly: true, sameSite: true });
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -62,6 +71,14 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/owner/register", (req, res) => {
+  const cookie = req.cookies.userLogin;
+
+  if (cookie) {
+    return res.status(400).send({
+      err: "You are already logged In!",
+    });
+  }
+
   if (!req.body.email) {
     return res.status(400).send({
       err: "email feild is required !",
@@ -106,6 +123,7 @@ router.post("/owner/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
+      res.cookie("userLogin", token, { httpOnly: true, sameSite: true });
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -117,8 +135,8 @@ router.post("/owner/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   const cookie = req.cookies.userLogin;
-  console.log(req.cookies);
-  console.log(req.signedCookies);
+  // console.log(req.cookies);
+  // console.log(req.signedCookies);
   if (cookie) {
     return res.status(400).send({
       err: "You are already logged In!",
