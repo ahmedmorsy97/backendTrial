@@ -30,6 +30,14 @@ const SignIn = (props) => {
       phoneNumber,
       password,
     };
+    axios
+      .post("/users/register", body)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log("Error is ", err);
+      });
   };
 
   return (
