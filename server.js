@@ -16,6 +16,8 @@ import moment from "moment";
 import { isRealString } from "./api/utils";
 import { Users } from "./api/utils";
 
+import cookieParser from "cookie-parser";
+
 const publicPath = path.join(__dirname, "./api/public");
 const port = process.env.PORT || 5000;
 const app = express();
@@ -112,6 +114,8 @@ io.on("connection", (socket) => {
   });
 });
 app.use(express.static(publicPath));
+
+app.use(cookieParser("CookiesSecret@1234"));
 
 app.use(json());
 app.use(

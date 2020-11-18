@@ -1,0 +1,15 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home .button {
+  margin-bottom: 10px;
+  padding: 10px 25px;
+  box-sizing: border-box;
+  min-width: 230px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}

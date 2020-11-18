@@ -1,6 +1,6 @@
 import { Router } from "express";
 import mongoose from "mongoose";
-import { Customer, Owner } from "../models";
+import { Customer, Owner, User } from "../models";
 import _ from "lodash";
 import { authenticate } from "../middlewares";
 import { compare } from "bcryptjs";
@@ -9,17 +9,17 @@ const router = Router();
 
 router.post("/register", (req, res) => {
   if (!req.body.email) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "email feild is required !",
     });
   }
   if (!req.body.password) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "password feild is required !",
     });
   }
   if (!req.body.phoneNumber) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "phoneNumber feild is required !",
     });
   }
@@ -63,17 +63,17 @@ router.post("/register", (req, res) => {
 
 router.post("/owner/register", (req, res) => {
   if (!req.body.email) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "email feild is required !",
     });
   }
   if (!req.body.password) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "password feild is required !",
     });
   }
   if (!req.body.phoneNumber) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "phoneNumber feild is required !",
     });
   }
@@ -116,13 +116,22 @@ router.post("/owner/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+  const cookie = req.cookies.userLogin;
+  console.log(req.cookies);
+  console.log(req.signedCookies);
+  if (cookie) {
+    return res.status(400).send({
+      err: "You are already logged In!",
+    });
+  }
+
   if (!req.body.email) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "email feild is required !",
     });
   }
   if (!req.body.password) {
-    res.status(400).send({
+    return res.status(400).send({
       err: "password feild is required !",
     });
   }
@@ -134,6 +143,7 @@ router.post("/login", (req, res) => {
   User.findByCredentials(userData.email, userData.password)
     .then((user) => {
       return user.generateAuthToken().then((token) => {
+        res.cookie("userLogin", token, { httpOnly: true, sameSite: true });
         res.header("x-auth", token).status(200).send(user);
       });
     })

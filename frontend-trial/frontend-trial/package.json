@@ -1,0 +1,25 @@
+{
+  "name": "create-next-app-default",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@zeit/next-css": "^1.0.1",
+    "axios": "^0.21.0",
+    "next": "^10.0.1",
+    "next-compose-plugins": "^2.2.1",
+    "nprogress": "^0.2.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
