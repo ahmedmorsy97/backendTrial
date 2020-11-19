@@ -18,7 +18,7 @@ const Nav = (props) => {
   const [isUser, setIsUser] = React.useState(false);
   React.useEffect(() => {
     axios
-      .post(
+      .get(
         "/users/me",
         {},
         {
