@@ -12,20 +12,28 @@ const links = [
   return link;
 });
 
-const Nav = async (props) => {
+const Nav = (props) => {
   const router = useRouter();
   const cookie = Cookies.get("userId");
   const [isUser, setIsUser] = React.useState(false);
-  await axios
-    .post(
-      "/me",
-      {},
-      {
-        withCredentials: true,
-      }
-    )
-    .then((user) => setIsUser(true))
-    .catch((err) => setIsUser(false));
+  React.useEffect(() => {
+    axios
+      .post(
+        "/me",
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((user) => {
+        console.log(user);
+        setIsUser(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsUser(false);
+      });
+  }, []);
   // console.log(cookie);
 
   const signOut = () => {
