@@ -75,6 +75,7 @@ const WaitingUser = (props) => {
         `/places/owner/delayInWaitingList/${props.placeId}`,
         {
           delayNumber: 1,
+          waitingId: props.data._id,
         },
         {
           withCredentials: true,
