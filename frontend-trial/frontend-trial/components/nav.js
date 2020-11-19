@@ -24,9 +24,9 @@ const Nav = (props) => {
         {},
         {
           withCredentials: true,
-          headers: {
-            "x-auth": cookie,
-          },
+          // headers: {
+          //   "x-auth": cookie,
+          // },
         }
       )
       .then((res) => {

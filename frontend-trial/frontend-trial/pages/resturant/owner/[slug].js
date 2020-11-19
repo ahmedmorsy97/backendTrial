@@ -53,9 +53,9 @@ const WaitingUser = (props) => {
         },
         {
           withCredentials: true,
-          headers: {
-            "x-auth": token,
-          },
+          //   headers: {
+          //     "x-auth": token,
+          //   },
         }
       )
       .then((res) => {
@@ -76,9 +76,9 @@ const WaitingUser = (props) => {
         },
         {
           withCredentials: true,
-          headers: {
-            "x-auth": token,
-          },
+          //   headers: {
+          //     "x-auth": token,
+          //   },
         }
       )
       .then((res) => {
@@ -97,9 +97,9 @@ const WaitingUser = (props) => {
         { attendance },
         {
           withCredentials: true,
-          headers: {
-            "x-auth": token,
-          },
+          //   headers: {
+          //     "x-auth": token,
+          //   },
         }
       )
       .then((res) => {
@@ -227,9 +227,9 @@ const PlaceOwner = (props) => {
         },
         {
           withCredentials: true,
-          headers: {
-            "x-auth": token,
-          },
+          //   headers: {
+          //     "x-auth": token,
+          //   },
         }
       )
       .then((res) => {

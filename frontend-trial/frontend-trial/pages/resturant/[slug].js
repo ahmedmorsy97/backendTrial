@@ -50,9 +50,9 @@ const WaitingUser = (props) => {
         {},
         {
           withCredentials: true,
-          headers: {
-            "x-auth": token,
-          },
+          //   headers: {
+          //     "x-auth": token,
+          //   },
         }
       )
       .then((res) => {
@@ -73,9 +73,9 @@ const WaitingUser = (props) => {
         },
         {
           withCredentials: true,
-          headers: {
-            "x-auth": token,
-          },
+          //   headers: {
+          //     "x-auth": token,
+          //   },
         }
       )
       .then((res) => {
@@ -170,9 +170,9 @@ const Place = (props) => {
         },
         {
           withCredentials: true,
-          headers: {
-            "x-auth": token,
-          },
+          //   headers: {
+          //     "x-auth": token,
+          //   },
         }
       )
       .then((res) => {
