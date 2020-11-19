@@ -14,7 +14,7 @@ const links = [
 
 const Nav = (props) => {
   const router = useRouter();
-  const cookie = Cookies.get("userId");
+  const cookie = Cookies.get("userId") || "123";
   // console.log(cookie);
 
   const signOut = () => {
