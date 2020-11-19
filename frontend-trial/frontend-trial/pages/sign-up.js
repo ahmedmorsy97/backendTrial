@@ -43,7 +43,9 @@ const SignIn = (props) => {
       .post("/users/register", body, { withCredentials: true })
       .then((res) => {
         router.push("/");
-        Cookies.set("userId", res.data._id);
+        Cookies.set("userId", res.data._id, {
+          expires: new Date(253402300799999),
+        });
         // console.log(res.data);
       })
       .catch((err) => {
