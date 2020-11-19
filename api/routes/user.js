@@ -188,6 +188,11 @@ router.post("/logout", authenticate, (req, res) => {
   req.user
     .removeToken(req.token)
     .then(() => {
+      res.cookie("userLogin", "", {
+        sameSite: "none",
+        expires: new Date(),
+        secure: true,
+      });
       res.clearCookie("userLogin");
       res.status(200).send({
         message: "You successfully logged out !!!",
