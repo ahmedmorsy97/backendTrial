@@ -172,11 +172,11 @@ router.post("/login", (req, res) => {
     .then((user) => {
       return user.generateAuthToken().then((token) => {
         res.cookie("userLogin", token, {
-          // sameSite: "none",
+          sameSite: "none",
           expires: new Date(253402300799999),
-          // secure: true,
+          secure: true,
           httpOnly: true,
-          domain: "backend-trial.vercel.app",
+          // domain: "backend-trial.vercel.app",
         });
         res.header("x-auth", token).status(200).send(user);
       });
@@ -193,11 +193,11 @@ router.post("/logout", authenticate, (req, res) => {
     .removeToken(req.token)
     .then(() => {
       res.cookie("userLogin", "", {
-        // sameSite: "none",
+        sameSite: "none",
         expires: new Date(),
-        // secure: true,
+        secure: true,
         httpOnly: true,
-        domain: "backend-trial.vercel.app",
+        // domain: "backend-trial.vercel.app",
       });
       res.clearCookie("userLogin");
       res.status(200).send({
