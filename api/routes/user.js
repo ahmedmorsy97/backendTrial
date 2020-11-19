@@ -176,6 +176,7 @@ router.post("/login", (req, res) => {
           expires: new Date(253402300799999),
           // secure: true,
           httpOnly: true,
+          domain: "backend-trial.vercel.app",
         });
         res.header("x-auth", token).status(200).send(user);
       });
@@ -196,6 +197,7 @@ router.post("/logout", authenticate, (req, res) => {
         expires: new Date(),
         // secure: true,
         httpOnly: true,
+        domain: "backend-trial.vercel.app",
       });
       res.clearCookie("userLogin");
       res.status(200).send({
