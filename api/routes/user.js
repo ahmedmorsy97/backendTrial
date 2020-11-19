@@ -142,14 +142,14 @@ router.post("/owner/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  const cookie = req.cookies.userLogin;
-  // console.log(req.cookies);
-  // console.log(req.signedCookies);
-  if (cookie) {
-    return res.status(400).send({
-      err: "You are already logged In!",
-    });
-  }
+  // const cookie = req.cookies.userLogin;
+  // // console.log(req.cookies);
+  // // console.log(req.signedCookies);
+  // if (cookie) {
+  //   return res.status(400).send({
+  //     err: "You are already logged In!",
+  //   });
+  // }
 
   if (!req.body.email) {
     return res.status(400).send({
