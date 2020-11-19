@@ -63,6 +63,7 @@ router.post("/register", (req, res) => {
       res.cookie("userLogin", token, {
         sameSite: "none",
         expires: new Date(253402300799999),
+        secure: true,
       });
       res.header("x-auth", token).status(200).send(user);
     })
@@ -129,6 +130,7 @@ router.post("/owner/register", (req, res) => {
       res.cookie("userLogin", token, {
         sameSite: "none",
         expires: new Date(253402300799999),
+        secure: true,
       });
       res.header("x-auth", token).status(200).send(user);
     })
@@ -170,6 +172,7 @@ router.post("/login", (req, res) => {
         res.cookie("userLogin", token, {
           sameSite: "none",
           expires: new Date(253402300799999),
+          secure: true,
         });
         res.header("x-auth", token).status(200).send(user);
       });
