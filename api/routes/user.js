@@ -60,7 +60,10 @@ router.post("/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
-      res.cookie("userLogin", token, { sameSite: false });
+      res.cookie("userLogin", token, {
+        sameSite: "none",
+        expires: new Date(253402300799999),
+      });
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -123,7 +126,10 @@ router.post("/owner/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
-      res.cookie("userLogin", token, { sameSite: false });
+      res.cookie("userLogin", token, {
+        sameSite: "none",
+        expires: new Date(253402300799999),
+      });
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -161,7 +167,10 @@ router.post("/login", (req, res) => {
   User.findByCredentials(userData.email, userData.password)
     .then((user) => {
       return user.generateAuthToken().then((token) => {
-        res.cookie("userLogin", token, { sameSite: false });
+        res.cookie("userLogin", token, {
+          sameSite: "none",
+          expires: new Date(253402300799999),
+        });
         res.header("x-auth", token).status(200).send(user);
       });
     })
