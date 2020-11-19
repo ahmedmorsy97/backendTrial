@@ -26,7 +26,10 @@ const Nav = (props) => {
         setIsUser(true);
       })
       .catch((err) => {
-        console.log(err);
+        const error = err.response;
+        const message = JSON.stringify(error.data, undefined, 2);
+        alert(error.status + " - " + message);
+        // console.log(error);
         setIsUser(false);
       });
   }, []);
@@ -50,7 +53,9 @@ const Nav = (props) => {
         console.log(res.data);
       })
       .catch((err) => {
-        console.log("Error is ", err);
+        const error = err.response;
+        const message = JSON.stringify(error.data, undefined, 2);
+        alert(error.status + " - " + message);
       });
   };
   return (

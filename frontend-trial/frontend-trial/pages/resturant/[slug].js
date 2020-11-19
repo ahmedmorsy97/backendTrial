@@ -61,7 +61,9 @@ const WaitingUser = (props) => {
         props.placeFetch();
       })
       .catch((err) => {
-        console.log(err);
+        const error = err.response;
+        const message = JSON.stringify(error.data, undefined, 2);
+        alert(error.status + " - " + message);
       });
   };
   const delayList = () => {
@@ -84,7 +86,9 @@ const WaitingUser = (props) => {
         props.placeFetch();
       })
       .catch((err) => {
-        console.log(err);
+        const error = err.response;
+        const message = JSON.stringify(error.data, undefined, 2);
+        alert(error.status + " - " + message);
       });
   };
   return userId === props.id ? (
@@ -155,7 +159,9 @@ const Place = (props) => {
         setPlace(res.data.place);
       })
       .catch((err) => {
-        console.log(err);
+        const error = err.response;
+        const message = JSON.stringify(error.data, undefined, 2);
+        alert(error.status + " - " + message);
       });
   };
 
@@ -181,7 +187,9 @@ const Place = (props) => {
         placeFetch();
       })
       .catch((err) => {
-        console.log(err);
+        const error = err.response;
+        const message = JSON.stringify(error.data, undefined, 2);
+        alert(error.status + " - " + message);
       });
   };
 
