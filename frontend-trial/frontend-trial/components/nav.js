@@ -18,13 +18,9 @@ const Nav = (props) => {
   const [isUser, setIsUser] = React.useState(false);
   React.useEffect(() => {
     axios
-      .get(
-        "/users/me",
-        {},
-        {
-          withCredentials: true,
-        }
-      )
+      .get("/users/me", {
+        withCredentials: true,
+      })
       .then((user) => {
         console.log(user);
         setIsUser(true);
