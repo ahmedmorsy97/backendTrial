@@ -64,6 +64,7 @@ router.post("/register", (req, res) => {
         sameSite: "none",
         expires: new Date(253402300799999),
         secure: true,
+        domain: "backend-trial.vercel.app",
       });
       res.header("x-auth", token).status(200).send(user);
     })
@@ -131,6 +132,7 @@ router.post("/owner/register", (req, res) => {
         sameSite: "none",
         expires: new Date(253402300799999),
         secure: true,
+        domain: "backend-trial.vercel.app",
       });
       res.header("x-auth", token).status(200).send(user);
     })
@@ -173,6 +175,7 @@ router.post("/login", (req, res) => {
           sameSite: "none",
           expires: new Date(253402300799999),
           secure: true,
+          domain: "backend-trial.vercel.app",
         });
         res.header("x-auth", token).status(200).send(user);
       });
@@ -192,6 +195,7 @@ router.post("/logout", authenticate, (req, res) => {
         sameSite: "none",
         expires: new Date(),
         secure: true,
+        domain: "backend-trial.vercel.app",
       });
       res.clearCookie("userLogin");
       res.status(200).send({
