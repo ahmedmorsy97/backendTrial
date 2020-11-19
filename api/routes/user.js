@@ -174,7 +174,7 @@ router.post("/login", (req, res) => {
         res.cookie("userLogin", token, {
           sameSite: "none",
           expires: new Date(253402300799999),
-          secure: true,
+          // secure: true,
           httpOnly: true,
         });
         res.header("x-auth", token).status(200).send(user);
@@ -194,7 +194,7 @@ router.post("/logout", authenticate, (req, res) => {
       res.cookie("userLogin", "", {
         sameSite: "none",
         expires: new Date(),
-        secure: true,
+        // secure: true,
         httpOnly: true,
       });
       res.clearCookie("userLogin");
