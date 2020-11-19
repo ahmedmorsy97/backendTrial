@@ -30,6 +30,7 @@ const Layout = (props) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          paddingBottom: "60px",
         }}
       >
         {props.children}

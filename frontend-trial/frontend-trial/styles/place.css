@@ -1,0 +1,57 @@
+.card {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.active {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.active p,
+.active button {
+  color: #fff !important;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.form .MuiFormControl-root {
+  margin-bottom: 10px;
+}
+
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cardActions p {
+  margin: 0;
+  padding: 2px 3px;
+  font-size: 14px;
+  width: 18px;
+  height: 18px;
+  background-color: brown;
+  color: #fff;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 3px;
+}
+
+.cardActions .badge {
+  margin-left: 10px;
+}
+
+.cardActions .badge .MuiBadge-badge {
+}

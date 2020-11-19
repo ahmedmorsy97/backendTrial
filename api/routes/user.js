@@ -60,7 +60,7 @@ router.post("/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
-      res.cookie("userLogin", token, { httpOnly: true, sameSite: true });
+      res.cookie("userLogin", token, { sameSite: true });
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -123,7 +123,7 @@ router.post("/owner/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
-      res.cookie("userLogin", token, { httpOnly: true, sameSite: true });
+      res.cookie("userLogin", token, { sameSite: true });
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -161,7 +161,7 @@ router.post("/login", (req, res) => {
   User.findByCredentials(userData.email, userData.password)
     .then((user) => {
       return user.generateAuthToken().then((token) => {
-        res.cookie("userLogin", token, { httpOnly: true, sameSite: true });
+        res.cookie("userLogin", token, { sameSite: true });
         res.header("x-auth", token).status(200).send(user);
       });
     })

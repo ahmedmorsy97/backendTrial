@@ -20,6 +20,9 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -44,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Resturant = (props) => {
+  const router = useRouter();
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -61,7 +65,14 @@ const Resturant = (props) => {
         }
         action={
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <MoreVertIcon
+              onClick={() =>
+                router.push({
+                  pathname: "/resturant/[slug]",
+                  query: { slug: props.data._id },
+                })
+              }
+            />
           </IconButton>
         }
         title={props.data.name}
@@ -134,8 +145,6 @@ const Resturant = (props) => {
 };
 
 const Home = (props) => {
-  React.useEffect(() => {}, []);
-
   return (
     <>
       <Head title="Home" />
@@ -143,10 +152,7 @@ const Home = (props) => {
         <h2>Places</h2>
         {props?.places.length > 0 ? (
           props.places.map((place, index) => (
-            <>
-              {console.log(place)}
-              <Resturant data={place} key={index} />
-            </>
+            <Resturant data={place} key={index} />
           ))
         ) : (
           <p>No Resturants to be viewed !!!</p>
@@ -174,5 +180,4 @@ export async function getServerSideProps(params) {
     },
   };
 }
-
 export default Home;

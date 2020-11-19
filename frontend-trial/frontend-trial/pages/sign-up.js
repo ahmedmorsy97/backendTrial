@@ -7,8 +7,16 @@ import { AlternateEmail, Lock, PhoneIphone } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 import "../styles/form.css";
 import axios from "axios";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const SignIn = (props) => {
+  const router = useRouter();
+  const cookie = Cookies.get("userLogin");
+  if (cookie) {
+    router.push("/");
+  }
+
   const [email, setEmail] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -32,9 +40,11 @@ const SignIn = (props) => {
       password,
     };
     axios
-      .post("/users/register", body)
+      .post("/users/register", body, { withCredentials: true })
       .then((res) => {
-        console.log(res.data);
+        router.push("/");
+        Cookies.set("userId", res.data._id);
+        // console.log(res.data);
       })
       .catch((err) => {
         console.log("Error is ", err);
