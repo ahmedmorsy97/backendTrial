@@ -19,7 +19,7 @@ const Nav = (props) => {
   React.useEffect(() => {
     axios
       .post(
-        "/me",
+        "/users/me",
         {},
         {
           withCredentials: true,
