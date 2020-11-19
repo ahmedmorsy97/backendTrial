@@ -15,7 +15,7 @@ const links = [
 const Nav = (props) => {
   const router = useRouter();
   const cookie = Cookies.get("userId");
-  const [isUser, setIsUser] = React.useState(false);
+  const [isUser, setIsUser] = React.useState(null);
   React.useEffect(() => {
     axios
       .get("/users/me", {
@@ -62,20 +62,26 @@ const Nav = (props) => {
           </Link>
         </li>
         <ul>
-          {!isUser ? (
-            links.map(({ key, href, label }) => (
-              <li key={key}>
-                <Link href={href}>
-                  <a>{label}</a>
-                </Link>
-              </li>
-            ))
+          {isUser === null ? (
+            <></>
           ) : (
-            <li>
-              <a onClick={() => signOut()} style={{ cursor: "pointer" }}>
-                {"Sign Out"}
-              </a>
-            </li>
+            <>
+              {!isUser ? (
+                links.map(({ key, href, label }) => (
+                  <li key={key}>
+                    <Link href={href}>
+                      <a>{label}</a>
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li>
+                  <a onClick={() => signOut()} style={{ cursor: "pointer" }}>
+                    {"Sign Out"}
+                  </a>
+                </li>
+              )}
+            </>
           )}
         </ul>
       </ul>
