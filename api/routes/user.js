@@ -194,7 +194,7 @@ router.post("/logout", authenticate, (req, res) => {
       res.cookie("userLogin", "", {
         sameSite: "none",
         expires: new Date(),
-        // secure: true,
+        secure: true,
         httpOnly: true,
       });
       res.clearCookie("userLogin");
