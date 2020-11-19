@@ -28,7 +28,7 @@ export const authorize = (userTypes) => (req, res, next) => {
 };
 
 export const authenticate = (req, res, next) => {
-  const token = req.cookies.userLogin;
+  const token = req.cookies.userLogin || req.header("x-auth");
 
   User.findByToken(token)
     .then((user) => {

@@ -52,6 +52,7 @@ const WaitingUser = (props) => {
           waitingId: props.data._id,
         },
         {
+          withCredentials: true,
           headers: {
             "x-auth": token,
           },
@@ -74,6 +75,7 @@ const WaitingUser = (props) => {
           delayNumber: 1,
         },
         {
+          withCredentials: true,
           headers: {
             "x-auth": token,
           },
@@ -94,6 +96,7 @@ const WaitingUser = (props) => {
         `/places/owner/popFromWaitingList/${props.placeId}`,
         { attendance },
         {
+          withCredentials: true,
           headers: {
             "x-auth": token,
           },
@@ -223,6 +226,7 @@ const PlaceOwner = (props) => {
           displayName: DisplayName !== "" ? DisplayName : "User",
         },
         {
+          withCredentials: true,
           headers: {
             "x-auth": token,
           },

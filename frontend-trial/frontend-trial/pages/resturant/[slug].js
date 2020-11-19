@@ -49,6 +49,7 @@ const WaitingUser = (props) => {
         `/places/customer/removeFromWaitingList/${props.placeId}`,
         {},
         {
+          withCredentials: true,
           headers: {
             "x-auth": token,
           },
@@ -71,6 +72,7 @@ const WaitingUser = (props) => {
           delayNumber: 1,
         },
         {
+          withCredentials: true,
           headers: {
             "x-auth": token,
           },
@@ -167,6 +169,7 @@ const Place = (props) => {
           displayName: DisplayName !== "" ? DisplayName : "User",
         },
         {
+          withCredentials: true,
           headers: {
             "x-auth": token,
           },
