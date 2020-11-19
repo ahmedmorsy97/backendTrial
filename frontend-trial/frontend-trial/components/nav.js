@@ -12,9 +12,20 @@ const links = [
   return link;
 });
 
-const Nav = (props) => {
+const Nav = async (props) => {
   const router = useRouter();
   const cookie = Cookies.get("userId");
+  const [isUser, setIsUser] = React.useState(false);
+  await axios
+    .post(
+      "/me",
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+    .then((user) => setIsUser(true))
+    .catch((err) => setIsUser(false));
   // console.log(cookie);
 
   const signOut = () => {
@@ -47,7 +58,7 @@ const Nav = (props) => {
           </Link>
         </li>
         <ul>
-          {!cookie ? (
+          {!isUser ? (
             links.map(({ key, href, label }) => (
               <li key={key}>
                 <Link href={href}>
