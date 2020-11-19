@@ -172,7 +172,7 @@ router.post("/login", (req, res) => {
     .then((user) => {
       return user.generateAuthToken().then((token) => {
         res.cookie("userLogin", token, {
-          sameSite: "none",
+          // sameSite: "none",
           expires: new Date(253402300799999),
           // secure: true,
           httpOnly: true,
@@ -192,7 +192,7 @@ router.post("/logout", authenticate, (req, res) => {
     .removeToken(req.token)
     .then(() => {
       res.cookie("userLogin", "", {
-        sameSite: "none",
+        // sameSite: "none",
         expires: new Date(),
         // secure: true,
         httpOnly: true,
