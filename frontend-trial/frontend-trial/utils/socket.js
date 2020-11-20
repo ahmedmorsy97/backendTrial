@@ -12,11 +12,11 @@ var connectionOptions = {
 };
 export const initiateSocket = (data) => {
   socket = io(endpoint, connectionOptions);
-  console.log(`Connecting socket...`);
+  //   console.log(`Connecting socket...`);
   if (socket && data.placeId) socket.emit("placeJoin", data);
 };
 export const disconnectSocket = () => {
-  console.log("Disconnecting socket...");
+  //   console.log("Disconnecting socket...");
   if (socket) socket.disconnect();
 };
 // export const subscribeToChat = (cb) => {
@@ -33,7 +33,7 @@ export const disconnectSocket = () => {
 export const subscribeToWaitingList = (cb) => {
   if (!socket) return true;
   socket.on("reqUpdateWaitingList", (msg) => {
-    console.log("Req to Update WaitingList received!");
+    // console.log("Req to Update WaitingList received!");
     return cb(null, msg);
   });
 };

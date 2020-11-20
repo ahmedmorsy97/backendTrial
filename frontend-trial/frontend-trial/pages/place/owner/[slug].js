@@ -59,7 +59,7 @@ const WaitingUser = (props) => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Socket.updateWaitingList(props.placeId, "leave waiting list");
         props.placeFetch();
       })
@@ -85,7 +85,7 @@ const WaitingUser = (props) => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Socket.updateWaitingList(props.placeId, "delay one in waiting list");
         props.placeFetch();
       })
@@ -108,7 +108,7 @@ const WaitingUser = (props) => {
         }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Socket.updateWaitingList(props.placeId, "pop guset from waiting list");
         props.placeFetch();
       })
@@ -204,7 +204,7 @@ const PlaceOwner = (props) => {
     Socket.initiateSocket({ placeId: place._id });
     Socket.subscribeToWaitingList((err, data) => {
       if (err) return;
-      console.log(data);
+      //   console.log(data);
       placeFetch();
     });
 
@@ -243,7 +243,7 @@ const PlaceOwner = (props) => {
       )
       .then((res) => {
         Socket.updateWaitingList(props.place._id, "join the waiting list");
-        console.log(res);
+        // console.log(res);
         placeFetch();
       })
       .catch((err) => {

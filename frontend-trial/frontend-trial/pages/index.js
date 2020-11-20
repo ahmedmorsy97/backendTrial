@@ -46,13 +46,70 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Resturant = (props) => {
+const Place = (props) => {
   const router = useRouter();
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const favoritePlaceUpdate = (id) => {
+    const favoratePlaces = props.user?.favoratePlaces || [];
+    if (favoratePlaces.includes(id)) {
+      axios
+        .post(
+          "/users/removeFromArray",
+          {
+            subdocumentName: "favoratePlaces",
+            subdocumentId: props.data._id,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          // console.log(res.data);
+          return axios.get("/users/me", {
+            withCredentials: true,
+          });
+        })
+        .then((user) => {
+          props.setUser(user.data);
+        })
+        .catch((err) => {
+          const error = err.response;
+          const message = JSON.stringify(error.data, undefined, 2);
+          alert(error.status + " - " + message);
+        });
+    } else {
+      axios
+        .post(
+          "/users/addToArray",
+          {
+            subdocumentName: "favoratePlaces",
+            subdocumentBody: props.data._id,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          // console.log(res.data);
+          return axios.get("/users/me", {
+            withCredentials: true,
+          });
+        })
+        .then((user) => {
+          props.setUser(user.data);
+        })
+        .catch((err) => {
+          const error = err.response;
+          const message = JSON.stringify(error.data, undefined, 2);
+          alert(error.status + " - " + message);
+        });
+    }
   };
 
   return (
@@ -68,7 +125,7 @@ const Resturant = (props) => {
             <MoreVertIcon
               onClick={() =>
                 router.push({
-                  pathname: "/resturant/[slug]",
+                  pathname: "/place/[slug]",
                   query: { slug: props.data._id },
                 })
               }
@@ -90,12 +147,18 @@ const Resturant = (props) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          aria-label="add to favorites"
+          onClick={() => favoritePlaceUpdate(props.data._id)}
+          className={
+            props.user?.favoratePlaces.include(props.data._id) ? "active" : ""
+          }
+        >
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="share">
+        {/* <IconButton aria-label="share">
           <ShareIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -145,6 +208,25 @@ const Resturant = (props) => {
 };
 
 const Home = (props) => {
+  const [isUser, setIsUser] = React.useState(null);
+  const [user, setUser] = React.useState(null);
+  React.useEffect(() => {
+    axios
+      .get("/users/me", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log(res);
+        setUser(res.data);
+        setIsUser(true);
+      })
+      .catch((err) => {
+        const error = err.response;
+        const message = JSON.stringify(error.data, undefined, 2);
+        setIsUser(false);
+      });
+  }, []);
+
   return (
     <>
       <Head title="Home" />
@@ -152,10 +234,10 @@ const Home = (props) => {
         <h2>Places</h2>
         {props?.places.length > 0 ? (
           props.places.map((place, index) => (
-            <Resturant data={place} key={index} />
+            <Place data={place} key={index} user={user} setUser={setUser} />
           ))
         ) : (
-          <p>No Resturants to be viewed !!!</p>
+          <p>No Places to be viewed !!!</p>
         )}
       </Layout>
     </>

@@ -22,14 +22,12 @@ const Nav = (props) => {
         withCredentials: true,
       })
       .then((user) => {
-        console.log(user);
+        // console.log(user);
         setIsUser(true);
       })
       .catch((err) => {
         const error = err.response;
         const message = JSON.stringify(error.data, undefined, 2);
-        alert(error.status + " - " + message);
-        // console.log(error);
         setIsUser(false);
       });
   }, []);
