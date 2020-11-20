@@ -55,9 +55,12 @@ const Place = (props) => {
     setExpanded(!expanded);
   };
 
+  console.log(props.user);
+
   const favoritePlaceUpdate = (id) => {
     const favoratePlaces = props.user?.favoratePlaces || [];
-    if (favoratePlaces.includes(id)) {
+
+    if (favoratePlaces?.includes(id)) {
       axios
         .post(
           "/users/removeFromArray",
