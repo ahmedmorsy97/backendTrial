@@ -25,3 +25,14 @@
   top: 45%;
   transform: translate(-50%, -50%) rotate(50deg);
 }
+
+.isFavorate span svg {
+  color: firebrick !important;
+}
+
+.placesHolder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

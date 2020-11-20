@@ -61,8 +61,8 @@ const WaitingUser = (props) => {
         props.placeFetch();
       })
       .catch((err) => {
-        const error = err.response;
-        const message = JSON.stringify(error.data, undefined, 2);
+        const error = err?.response;
+        const message = JSON.stringify(error?.data, undefined, 2);
         alert(error.status + " - " + message);
       });
   };
@@ -86,8 +86,8 @@ const WaitingUser = (props) => {
         props.placeFetch();
       })
       .catch((err) => {
-        const error = err.response;
-        const message = JSON.stringify(error.data, undefined, 2);
+        const error = err?.response;
+        const message = JSON.stringify(error?.data, undefined, 2);
         alert(error.status + " - " + message);
       });
   };
@@ -159,8 +159,8 @@ const Place = (props) => {
         setPlace(res.data.place);
       })
       .catch((err) => {
-        const error = err.response;
-        const message = JSON.stringify(error.data, undefined, 2);
+        const error = err?.response;
+        const message = JSON.stringify(error?.data, undefined, 2);
         alert(error.status + " - " + message);
       });
   };
@@ -187,8 +187,8 @@ const Place = (props) => {
         placeFetch();
       })
       .catch((err) => {
-        const error = err.response;
-        const message = JSON.stringify(error.data, undefined, 2);
+        const error = err?.response;
+        const message = JSON.stringify(error?.data, undefined, 2);
         alert(error.status + " - " + message);
       });
   };

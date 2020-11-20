@@ -44,8 +44,8 @@ const SignIn = (props) => {
         // console.log(res);
       })
       .catch((err) => {
-        const error = err.response;
-        const message = JSON.stringify(error.data, undefined, 2);
+        const error = err?.response;
+        const message = JSON.stringify(error?.data, undefined, 2);
         alert(error.status + " - " + message);
       });
   };

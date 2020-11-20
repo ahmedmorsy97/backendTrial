@@ -17,8 +17,8 @@ const Profile = (props) => {
         setIsUser(true);
       })
       .catch((err) => {
-        const error = err.response;
-        const message = JSON.stringify(error.data, undefined, 2);
+        const error = err?.response;
+        const message = JSON.stringify(error?.data, undefined, 2);
         setIsUser(false);
       });
   }, []);

@@ -4,21 +4,23 @@ import Layout from "../components/Layout";
 import axios from "axios";
 import "../styles/global.css";
 import { Dns } from "@material-ui/icons";
+import Place from "../components/place";
 
 const Lists = (props) => {
   const [isUser, setIsUser] = React.useState(null);
+  const [user, setUser] = React.useState(null);
   React.useEffect(() => {
     axios
       .get("/users/me", {
         withCredentials: true,
       })
       .then((user) => {
-        // console.log(user);
+        setUser(user.data);
         setIsUser(true);
       })
       .catch((err) => {
-        const error = err.response;
-        const message = JSON.stringify(error.data, undefined, 2);
+        const error = err?.response;
+        const message = JSON.stringify(error?.data, undefined, 2);
         setIsUser(false);
       });
   }, []);
@@ -42,7 +44,30 @@ const Lists = (props) => {
                 </h3>
               </div>
             ) : (
-              <></>
+              <>
+                {user?.waitingLists?.length === 0 ? (
+                  <div className="noUser">
+                    <div className="svg">
+                      <Dns />
+                    </div>
+                    <h3>
+                      Ohh no, you are to busy to join your favorate place'
+                      waiting list !!
+                    </h3>
+                  </div>
+                ) : (
+                  <div className="placesHolder">
+                    {user?.waitingLists?.map((place, index) => (
+                      <Place
+                        data={place}
+                        key={index}
+                        user={user}
+                        setUser={setUser}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </>
         )}

@@ -60,12 +60,18 @@ router.post("/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
-      res.cookie("userLogin", token, {
-        sameSite: "none",
-        expires: new Date(253402300799999),
-        secure: true,
-        httpOnly: true,
-      });
+      if (process.env.NODE_ENV === "production")
+        res.cookie("userLogin", token, {
+          sameSite: "none",
+          expires: new Date(253402300799999),
+          secure: true,
+          httpOnly: true,
+        });
+      else
+        res.cookie("userLogin", token, {
+          expires: new Date(253402300799999),
+          httpOnly: true,
+        });
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -128,12 +134,19 @@ router.post("/owner/register", (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
-      res.cookie("userLogin", token, {
-        sameSite: "none",
-        expires: new Date(253402300799999),
-        secure: true,
-        httpOnly: true,
-      });
+      if (process.env.NODE_ENV === "production")
+        res.cookie("userLogin", token, {
+          sameSite: "none",
+          expires: new Date(253402300799999),
+          secure: true,
+          httpOnly: true,
+        });
+      else
+        res.cookie("userLogin", token, {
+          expires: new Date(253402300799999),
+          httpOnly: true,
+        });
+
       res.header("x-auth", token).status(200).send(user);
     })
     .catch((err) => {
@@ -171,13 +184,20 @@ router.post("/login", (req, res) => {
   User.findByCredentials(userData.email, userData.password)
     .then((user) => {
       return user.generateAuthToken().then((token) => {
-        res.cookie("userLogin", token, {
-          sameSite: "none",
-          expires: new Date(253402300799999),
-          secure: true,
-          httpOnly: true,
-          // domain: "backend-trial.vercel.app",
-        });
+        if (process.env.NODE_ENV === "production")
+          res.cookie("userLogin", token, {
+            sameSite: "none",
+            expires: new Date(253402300799999),
+            secure: true,
+            httpOnly: true,
+            // domain: "backend-trial.vercel.app",
+          });
+        else
+          res.cookie("userLogin", token, {
+            expires: new Date(253402300799999),
+            httpOnly: true,
+          });
+
         res.header("x-auth", token).status(200).send(user);
       });
     })
@@ -192,13 +212,19 @@ router.post("/logout", authenticate, (req, res) => {
   req.user
     .removeToken(req.token)
     .then(() => {
-      res.cookie("userLogin", "", {
-        sameSite: "none",
-        expires: new Date(),
-        secure: true,
-        httpOnly: true,
-        // domain: "backend-trial.vercel.app",
-      });
+      if (process.env.NODE_ENV === "production")
+        res.cookie("userLogin", "", {
+          sameSite: "none",
+          expires: new Date(),
+          secure: true,
+          httpOnly: true,
+        });
+      else
+        res.cookie("userLogin", "", {
+          expires: new Date(),
+          httpOnly: true,
+        });
+
       res.clearCookie("userLogin");
       res.status(200).send({
         message: "You successfully logged out !!!",
@@ -280,9 +306,7 @@ router.post("/removeFromArray", authenticate, (req, res) => {
     { _id: req.user._id },
     {
       $pull: {
-        [`${req.body.subdocumentName}`]: {
-          _id: req.body.subdocumentId,
-        },
+        [`${req.body.subdocumentName}`]: req.body.subdocumentId,
       },
     },
     {
@@ -335,7 +359,7 @@ router.post("/addToArray", authenticate, (req, res) => {
     { _id: req.user._id },
     {
       $push: {
-        [`${req.body.subdocumentName}`]: { ...req.body.subdocumentBody },
+        [`${req.body.subdocumentName}`]: req.body.subdocumentBody,
       },
     },
     {
