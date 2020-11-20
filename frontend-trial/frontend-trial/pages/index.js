@@ -55,7 +55,7 @@ const Place = (props) => {
     setExpanded(!expanded);
   };
 
-  console.log(props.user);
+  // console.log(props.user);
 
   const favoritePlaceUpdate = (id) => {
     const favoratePlaces = props.user?.favoratePlaces || [];
@@ -157,7 +157,7 @@ const Place = (props) => {
             props?.user?.favoratePlaces &&
             props.user.favoratePlaces
               .map((el) => el._id)
-              .include(props.data._id)
+              .includes(props.data._id)
               ? "active"
               : ""
           }
