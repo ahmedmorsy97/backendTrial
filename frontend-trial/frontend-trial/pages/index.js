@@ -151,7 +151,7 @@ const Place = (props) => {
           aria-label="add to favorites"
           onClick={() => favoritePlaceUpdate(props.data._id)}
           className={
-            props.user?.favoratePlaces.include(props.data._id) ? "active" : ""
+            props.user?.favoratePlaces?.include(props.data._id) ? "active" : ""
           }
         >
           <FavoriteIcon />
