@@ -66,7 +66,7 @@ const WaitingUser = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
   const delayGuestList = () => {
@@ -92,7 +92,7 @@ const WaitingUser = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
   const popFromList = (attendance) => {
@@ -115,7 +115,7 @@ const WaitingUser = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
   return !props.data.isUser ? (
@@ -222,7 +222,7 @@ const PlaceOwner = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
 
@@ -249,7 +249,7 @@ const PlaceOwner = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
 

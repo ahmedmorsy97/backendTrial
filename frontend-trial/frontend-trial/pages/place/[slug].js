@@ -63,7 +63,7 @@ const WaitingUser = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
   const delayList = () => {
@@ -88,7 +88,7 @@ const WaitingUser = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
   return userId === props.id ? (
@@ -161,7 +161,7 @@ const Place = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
 
@@ -189,7 +189,7 @@ const Place = (props) => {
       .catch((err) => {
         const error = err?.response;
         const message = JSON.stringify(error?.data, undefined, 2);
-        alert(error.status + " - " + message);
+        alert(error?.status + " - " + message);
       });
   };
 
