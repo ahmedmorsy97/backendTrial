@@ -384,4 +384,110 @@ router.post("/addToArray", authenticate, (req, res) => {
     });
 });
 
+router.post("/removeFromFavorateArray", authenticate, (req, res) => {
+  if (req.body.waitingListHistory) delete req.body.waitingListHistory;
+  if (req.body.favoratePlaces) delete req.body.favoratePlaces;
+  if (req.body.waitingLists) delete req.body.waitingLists;
+  if (req.body.emailConfirmed) delete req.body.emailConfirmed;
+  if (req.body.isBanned) delete req.body.isBanned;
+  if (req.body.password) delete req.body.password;
+  if (req.body.rating) delete req.body.rating;
+  if (req.body.userId) delete req.body.userId;
+  if (req.body.tokens) delete req.body.tokens;
+  if (req.body._id) delete req.body._id;
+
+  // if (!req.body.subdocumentName) {
+  //   return res.status(400).send({
+  //     err: "Subdocument name is required !!",
+  //   });
+  // }
+
+  if (!req.body.subdocumentId) {
+    return res.status(400).send({
+      err: "Subdocument id is required !!",
+    });
+  }
+
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    {
+      $pull: {
+        favoratePlaces: req.body.subdocumentId,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .then((user) => {
+      if (!user) {
+        throw {
+          message: "No user with this id !",
+        };
+      }
+      res.status(200).send({
+        user,
+        message: `You have update part/s fo your account successfully !!`,
+      });
+    })
+    .catch((err) => {
+      res.status(400).send({
+        err: err.message ? err.message : err,
+      });
+    });
+});
+
+router.post("/addToFavorateArray", authenticate, (req, res) => {
+  if (req.body.waitingListHistory) delete req.body.waitingListHistory;
+  if (req.body.favoratePlaces) delete req.body.favoratePlaces;
+  if (req.body.waitingLists) delete req.body.waitingLists;
+  if (req.body.emailConfirmed) delete req.body.emailConfirmed;
+  if (req.body.isBanned) delete req.body.isBanned;
+  if (req.body.password) delete req.body.password;
+  if (req.body.rating) delete req.body.rating;
+  if (req.body.userId) delete req.body.userId;
+  if (req.body.tokens) delete req.body.tokens;
+  if (req.body._id) delete req.body._id;
+
+  // if (!req.body.subdocumentName) {
+  //   return res.status(400).send({
+  //     err: "Subdocument name is required !!",
+  //   });
+  // }
+
+  if (!req.body.subdocumentBody) {
+    return res.status(400).send({
+      err: "Subdocument body is required !!",
+    });
+  }
+
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    {
+      $push: {
+        favoratePlaces: req.body.subdocumentBody,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .then((user) => {
+      if (!user) {
+        throw {
+          message: "No user with this id !",
+        };
+      }
+      res.status(200).send({
+        user,
+        message: `You have update part/s fo your account successfully !!`,
+      });
+    })
+    .catch((err) => {
+      res.status(400).send({
+        err: err.message ? err.message : err,
+      });
+    });
+});
+
 export const user = router;
