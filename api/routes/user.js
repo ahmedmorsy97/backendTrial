@@ -63,7 +63,7 @@ router.post("/register", (req, res) => {
       if (process.env.NODE_ENV === "production")
         res.cookie("userLogin", token, {
           sameSite: "none",
-          expires: new Date(253402300799999),
+          // expires: new Date(253402300799999),
           secure: true,
           httpOnly: true,
         });
@@ -137,7 +137,7 @@ router.post("/owner/register", (req, res) => {
       if (process.env.NODE_ENV === "production")
         res.cookie("userLogin", token, {
           sameSite: "none",
-          expires: new Date(253402300799999),
+          // expires: new Date(253402300799999),
           secure: true,
           httpOnly: true,
         });
@@ -187,7 +187,7 @@ router.post("/login", (req, res) => {
         if (process.env.NODE_ENV === "production")
           res.cookie("userLogin", token, {
             sameSite: "none",
-            expires: new Date(253402300799999),
+            // expires: new Date(253402300799999),
             secure: true,
             httpOnly: true,
             // domain: "backend-trial.vercel.app",
