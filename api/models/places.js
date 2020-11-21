@@ -33,7 +33,7 @@ const schema = new Schema({
   owner: {
     type: mongoose.Types.ObjectId,
     ref: "Users",
-    autopopulate: true,
+    // autopopulate: true,
     required: true,
   },
   employees: [
