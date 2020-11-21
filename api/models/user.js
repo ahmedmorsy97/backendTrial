@@ -178,18 +178,18 @@ schema.methods.removeToken = function (token) {
 
 schema.statics.findByToken = function (token) {
   const User = this;
-  let decoded;
+  // let decoded;
 
-  try {
-    decoded = jwt.verify(token, secretOrPrivateKey);
-  } catch (err) {
-    return Promise.reject({
-      message: err,
-    });
-  }
+  // try {
+  //   decoded = jwt.verify(token, secretOrPrivateKey);
+  // } catch (err) {
+  //   return Promise.reject({
+  //     message: err,
+  //   });
+  // }
 
   return User.findOne({
-    _id: decoded._id,
+    // _id: decoded._id,
     "tokens.token": token,
     "tokens.access": "auth",
   });
