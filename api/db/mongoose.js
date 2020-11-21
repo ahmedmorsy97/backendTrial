@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 const url = "mongodb://localhost:27017/Trial";
 const URI =
-  `${process.env.NODE_ENV}` === "productions"
+  `${process.env.NODE_ENV}` === "production"
     ? `mongodb+srv://${process.env.MognoDB_UserName}:${process.env.MognoDB_Password}@trial.kzrgi.mongodb.net/Trial?retryWrites=true&w=majority`
     : url;
 (async () => {
