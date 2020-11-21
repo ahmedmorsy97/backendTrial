@@ -107,7 +107,7 @@ const schema = new Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "Places",
-        autopopulate: true,
+        // autopopulate: true,
       },
     ],
   },
