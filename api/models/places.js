@@ -40,7 +40,7 @@ const schema = new Schema({
     {
       type: mongoose.Types.ObjectId,
       ref: "Users",
-      autopopulate: true,
+      // autopopulate: true,
     },
   ],
   name: {
@@ -109,7 +109,7 @@ const schema = new Schema({
       user: {
         type: mongoose.Types.ObjectId,
         ref: "Users",
-        autopopulate: true,
+        // autopopulate: true,
       },
       name: {
         type: String,
