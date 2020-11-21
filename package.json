@@ -5,9 +5,6 @@
   "author": "Ahmed Samir Morsy",
   "license": "MIT",
   "main": "server.js",
-  "engines": {
-    "node": "14.x"
-  },
   "scripts": {
     "test": "mocha **/*.test.js",
     "test-watch": "nodemon --exec \"npm test\"",
