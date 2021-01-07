@@ -12,7 +12,7 @@ const URI =
     : url;
 (async () => {
   try {
-    console.log("URI", URI);
+    // console.log("URI", URI);
     const { connection } = await mongoose.connect(URI, {
       useCreateIndex: true,
       useFindAndModify: false,

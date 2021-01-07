@@ -25,15 +25,15 @@ const server = http.createServer(app);
 export const io = socketIO(server, {
   origins: [
     "http://localhost:3000",
-    "https://backend-trial.vercel.app/",
-    "https://www.backend-trial.vercel.app/",
+    "https://el-lista.vercel.app/",
+    "https://www.el-lista.vercel.app/",
   ],
 });
 
 const users = new Users();
 
 io.on("connection", (socket) => {
-  console.log("New user is connected");
+  // console.log("New user is connected");
 
   // socket.emit("newEmail", {
   //   from: "ahmed@hmail.com",
@@ -102,7 +102,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateWaitingList", (data, callback) => {
-    if (!data.placeId) callback("placeId is not provided");
+    // if (!data.placeId) callback("placeId is not provided");
     io.to(data.placeId).emit("reqUpdateWaitingList", {});
     // callback();
   });

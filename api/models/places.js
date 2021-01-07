@@ -52,7 +52,15 @@ const schema = new Schema({
     type: String,
     required: true,
     trim: true,
-    enum: ["resturant", "bank", "coffee-shop", "store", "grocery", "goverment"],
+    enum: [
+      "resturant",
+      "bank",
+      "coffee-shop",
+      "store",
+      "grocery",
+      "goverment",
+      "barber-shop",
+    ],
   },
   address: {
     type: String,
@@ -172,16 +180,16 @@ const schema = new Schema({
       type: Number,
       default: 0,
     },
-    list: [
+    userslist: [
       {
         user: {
           type: mongoose.Types.ObjectId,
           ref: "Users",
         },
-        numberInList: {
-          type: Number,
-          unique: true,
-        },
+        // numberInList: {
+        //   type: Number,
+        //   unique: true,
+        // },
         createdAt: {
           type: Date,
           default: moment().valueOf(),

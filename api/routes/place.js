@@ -95,14 +95,14 @@ router.get("/readAll", (req, res) => {
   const { queryBody, search, page, sort, limit } = req.body;
   const skip = limit * (page - 1);
   if (search) queryBody.$text = { $search: search };
-  Place.find({ isConfirmed: true, isRemoved: false, ...queryBody })
-    .select("-isConfirmed -isRemoved -owner -employees")
+  Place.find({ isRemoved: false, ...queryBody })
+    .select("-isBanned -isRemoved -owner -employees")
     .sort(sort)
     .skip(skip)
     .limit(limit)
     .then(async (places) => {
       const count = await Place.countDocuments(queryBody)
-        .select("-isConfirmed -isRemoved -owner -employees")
+        .select("-isBanned -isRemoved -owner -employees")
         .sort(sort);
       const pages = Math.ceil(count / limit);
       res.status(200).send({ places, pages });
@@ -740,6 +740,68 @@ router.post("/owner/delayInWaitingList/:placeId", authenticate, (req, res) => {
     });
 });
 
+router.post(
+  "/owner/incrementCounterList/:placeId",
+  authenticate,
+  (req, res) => {
+    if (!req.params.placeId) {
+      return res.status(400).send({
+        err: "placeId is required !",
+      });
+    }
+    const placeId = req.params.placeId;
+    if (!mongoose.isValidObjectId(placeId)) {
+      return res.status(400).send({
+        err: "placeId is not a valid objectId !",
+      });
+    }
+
+    Place.findOne({ _id: placeId, owner: req.user._id })
+      .then((place) => {
+        if (!place) {
+          throw {
+            message: "No place with this id !",
+          };
+        }
+        console.log(place);
+        if (place.counterList.counter === place.counterList.userslist.length) {
+          throw {
+            message: "No users in the list to increment the number",
+          };
+        }
+
+        return Place.findOneAndUpdate(
+          { _id: placeId, owner: req.user._id },
+          {
+            $inc: {
+              "counterList.counter": 1,
+            },
+          },
+          {
+            new: true,
+          }
+        );
+      })
+      .then((place) => {
+        console.log("test");
+        console.log(place);
+        res.status(200).send({
+          counterList: place.counterList,
+          message: `${place.type} with name " ${place.name} " has been updated successfully !!`,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          err: err.message ? err.message : err,
+        });
+      });
+  }
+);
+
+// ****************************************************************************************************
+//                                          customer
+// ****************************************************************************************************
+
 router.post("/customer/addToWaitingList/:placeId", authenticate, (req, res) => {
   if (!req.params.placeId) {
     return res.status(400).send({
@@ -1050,5 +1112,84 @@ router.post(
       });
   }
 );
+
+router.post("/customer/addToCounterList/:placeId", authenticate, (req, res) => {
+  if (!req.params.placeId) {
+    return res.status(400).send({
+      err: "placeId is required !",
+    });
+  }
+  const placeId = req.params.placeId;
+  if (!mongoose.isValidObjectId(placeId)) {
+    return res.status(400).send({
+      err: "placeId is not a valid objectId !",
+    });
+  }
+
+  Place.findById(placeId)
+    .then(async (place) => {
+      if (!place) {
+        throw {
+          message: "No place with this id !",
+        };
+      }
+
+      if (!place.openCounterlist) {
+        throw {
+          message: `${place.name} still did not open the counter list qeueue.`,
+        };
+      }
+
+      if (place.stopCounterList) {
+        throw {
+          message: `${place.name} currently not recieving new guests in the counter list qeueue.`,
+        };
+      }
+
+      const isInCounterList = await place.counterList.userslist.map(
+        (el) => el.user
+      );
+
+      if (isInCounterList.includes(req.user._id)) {
+        throw {
+          message: `You are already in the counter list.`,
+        };
+      }
+
+      return Place.findOneAndUpdate(
+        { _id: placeId },
+        {
+          $push: {
+            "counterList.userslist": {
+              $each: [
+                {
+                  user: req.user._id,
+                },
+              ],
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+    })
+    .then(async (place) => {
+      await User.findByIdAndUpdate(req.user._id, {
+        $push: {
+          counterLists: place._id,
+        },
+      });
+      res.status(200).send({
+        counterList: place.counterList,
+        message: `You are added to ${place.name}'s waiting list successfully !!`,
+      });
+    })
+    .catch((err) => {
+      res.status(400).send({
+        err: err.message ? err.message : err,
+      });
+    });
+});
 
 export const place = router;

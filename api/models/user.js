@@ -110,6 +110,13 @@ const schema = new Schema(
         // autopopulate: true,
       },
     ],
+    counterLists: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Places",
+        // autopopulate: true,
+      },
+    ],
   },
   {
     timestamps: true,
@@ -144,6 +151,8 @@ schema.methods.toJSON = function () {
     "userType",
     "waitingListHistory",
     "userId",
+    "firstName",
+    "lastName",
   ]);
 };
 
