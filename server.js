@@ -34,7 +34,7 @@ export const io = socketIO(server, {
 
 const users = new Users();
 
-io.io.on("connection", (socket) => {
+io.on("connection", (socket) => {
   // console.log("New user is connected");
 
   // socket.emit("newEmail", {
