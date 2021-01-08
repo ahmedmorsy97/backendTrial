@@ -28,11 +28,13 @@ export const io = socketIO(server, {
     "https://el-lista.vercel.app/",
     "https://www.el-lista.vercel.app/",
   ],
+  pingTimeout: 60000,
+  pingInterval: 25000,
 });
 
 const users = new Users();
 
-io.on("connection", (socket) => {
+io.io.on("connection", (socket) => {
   // console.log("New user is connected");
 
   // socket.emit("newEmail", {
