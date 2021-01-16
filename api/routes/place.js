@@ -91,7 +91,7 @@ router.post("/owner/create", authenticate, (req, res) => {
     });
 });
 
-router.get("/readAll", (req, res) => {
+router.post("/readAll", (req, res) => {
   const { queryBody, search, page, sort, limit } = req.body;
   const skip = limit * (page - 1);
   if (search) queryBody.$text = { $search: search };
