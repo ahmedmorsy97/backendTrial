@@ -576,28 +576,155 @@ router.post("/owner/popFromWaitingList/:placeId", authenticate, (req, res) => {
       }
       const guest = await place.waitingList[0];
       if (guest.isUser) {
-        const waitingListHistory = {
-          place: placeId,
-          rating: req.body.rating ? req.body.rating : null,
-          comment: req.body.comment ? req.body.comment : null,
-          attendance: req.body.attendance,
-          name: place.name,
-        };
-        if (!waitingListHistory.rating) {
-          delete waitingListHistory.rating;
-        }
-        if (!waitingListHistory.comment) {
-          delete waitingListHistory.comment;
-        }
-        // send email to the user
-        await User.findByIdAndUpdate(guest.user._id, {
-          $pull: {
-            waitingLists: place._id,
-          },
-          $push: {
-            waitingListHistory,
-          },
+        let userObj;
+        await User.findById(guest.user._id).then((rr) => {
+          userObj = rr;
         });
+        const isInWaitingHistory = userObj.waitingListHistory
+          .map((el) => el.place)
+          .includes(placeId);
+        if (isInWaitingHistory) {
+          const waitingListHistory = {
+            place: placeId,
+            rating: req.body.rating ? req.body.rating : -1,
+            comment: req.body.comment ? req.body.comment : null,
+            attendance: req.body.attendance,
+            name: place.name,
+          };
+          const numberToBeDivideWith = waitingListHistory.rating < 0 ? 0 : 1;
+          if (waitingListHistory.rating < 0) {
+            waitingListHistory.rating = 0;
+          }
+          if (!waitingListHistory.comment) {
+            delete waitingListHistory.comment;
+            // send email to the user
+            await User.findByIdAndUpdate(guest.user._id, {
+              $pull: {
+                waitingLists: place._id,
+              },
+            });
+            switch (waitingListHistory.attendance) {
+              case "attended":
+                await User.findOneAndUpdate(
+                  {
+                    _id: guest.user._id,
+                    "waitingListHistory.place": waitingListHistory.place,
+                  },
+                  {
+                    $inc: {
+                      "waitingListHistory.$.attendance.attended": 1,
+                      "waitingListHistory.$.rating": waitingListHistory.rating,
+                      "waitingListHistory.$.ratingDivider": numberToBeDivideWith,
+                    },
+                    $set: {
+                      "waitingListHistory.$.name": waitingListHistory.name,
+                    },
+                  }
+                );
+                break;
+
+              case "missed":
+                await User.findOneAndUpdate(
+                  {
+                    _id: guest.user._id,
+                    "waitingListHistory.place": waitingListHistory.place,
+                  },
+                  {
+                    $inc: {
+                      "waitingListHistory.$.attendance.missed": 1,
+                      "waitingListHistory.$.rating": waitingListHistory.rating,
+                      "waitingListHistory.$.ratingDivider": numberToBeDivideWith,
+                    },
+                    $set: {
+                      "waitingListHistory.$.name": waitingListHistory.name,
+                    },
+                  }
+                );
+                break;
+
+              default:
+                break;
+            }
+          } else {
+            // send email to the user
+            await User.findByIdAndUpdate(guest.user._id, {
+              $pull: {
+                waitingLists: place._id,
+              },
+            });
+            switch (waitingListHistory.attendance) {
+              case "attended":
+                await User.findOneAndUpdate(
+                  {
+                    _id: guest.user._id,
+                    "waitingListHistory.place": waitingListHistory.place,
+                  },
+                  {
+                    $inc: {
+                      "waitingListHistory.$.attendance.attended": 1,
+                      "waitingListHistory.$.rating": waitingListHistory.rating,
+                      "waitingListHistory.$.ratingDivider": numberToBeDivideWith,
+                    },
+                    $push: {
+                      "waitingListHistory.$.comments":
+                        waitingListHistory.comment,
+                    },
+                    $set: {
+                      "waitingListHistory.$.name": waitingListHistory.name,
+                    },
+                  }
+                );
+                break;
+
+              case "missed":
+                await User.findOneAndUpdate(
+                  {
+                    _id: guest.user._id,
+                    "waitingListHistory.place": waitingListHistory.place,
+                  },
+                  {
+                    $inc: {
+                      "waitingListHistory.$.attendance.missed": 1,
+                      "waitingListHistory.$.rating": waitingListHistory.rating,
+                      "waitingListHistory.$.ratingDivider": numberToBeDivideWith,
+                    },
+                    $push: {
+                      "waitingListHistory.$.comments":
+                        waitingListHistory.comment,
+                    },
+                    $set: {
+                      "waitingListHistory.$.name": waitingListHistory.name,
+                    },
+                  }
+                );
+                break;
+
+              default:
+                break;
+            }
+          }
+        } else {
+          const waitingListHistory = {
+            place: placeId,
+            rating: req.body.rating ? req.body.rating : 0,
+            comments: req.body.comment ? [req.body.comment] : [],
+            attendance: {
+              attended: req.body.attendance === "attended" ? 1 : 0,
+              left: req.body.attendance === "left" ? 1 : 0,
+              missed: req.body.attendance === "missed" ? 1 : 0,
+            },
+            name: place.name,
+          };
+          await User.findByIdAndUpdate(
+            guest.user._id,
+            {
+              $push: {
+                waitingListHistory,
+              },
+            },
+            { new: true }
+          );
+        }
       }
       return Place.findOneAndUpdate(
         { _id: placeId, owner: req.user._id },
@@ -943,40 +1070,104 @@ router.post(
             message: "No place with this id !",
           };
         }
-        const waitingListHistory = {
-          place: placeId,
-          rating: req.body.rating ? req.body.rating : null,
-          comment: req.body.comment ? req.body.comment : null,
-          attendance: "left",
-          name: place.name,
-        };
-        if (!waitingListHistory.rating) {
-          delete waitingListHistory.rating;
-        }
-        if (!waitingListHistory.comment) {
-          delete waitingListHistory.comment;
-        }
+        // console.log(req.user.waitingListHistory);
+        const isInWaitingHistory = req.user.waitingListHistory
+          .map((el) => el.place)
+          .includes(placeId);
+        if (isInWaitingHistory) {
+          // console.log("innn");
+          const waitingListHistory = {
+            place: placeId,
+            rating: req.body.rating ? req.body.rating : -1,
+            comment: req.body.comment ? req.body.comment : null,
+            attendance: "left",
+            name: place.name,
+          };
 
-        const guestList = await place.waitingList.map((el) => {
-          if (el.user) return el.user._id;
-        });
+          const guestList = await place.waitingList.map((el) => {
+            if (el.user) return el.user._id;
+          });
 
-        // console.log(place.waitingList);
-        // console.log(guestList);
-        // console.log(req.user._id);
+          if (!guestList.includes(req.user._id))
+            throw `You are already removed from waiting list successfully !!`;
 
-        if (!guestList.includes(req.user._id))
-          throw `You are already removed from waiting list successfully !!`;
-
-        return User.findByIdAndUpdate(
-          req.user._id,
-          {
-            $push: {
-              waitingListHistory,
+          const numberToBeDivideWith = waitingListHistory.rating < 0 ? 0 : 1;
+          if (waitingListHistory.rating < 0) {
+            waitingListHistory.rating = 0;
+          }
+          if (!waitingListHistory.comment) {
+            delete waitingListHistory.comment;
+            // send email to the user
+            return User.findOneAndUpdate(
+              {
+                _id: req.user._id,
+                "waitingListHistory.place": waitingListHistory.place,
+              },
+              {
+                $inc: {
+                  "waitingListHistory.$.attendance.left": 1,
+                  "waitingListHistory.$.rating": waitingListHistory.rating,
+                  "waitingListHistory.$.ratingDivider": numberToBeDivideWith,
+                },
+                $set: {
+                  "waitingListHistory.$.name": waitingListHistory.name,
+                },
+              },
+              { new: true }
+            );
+          } else {
+            // send email to the user
+            return User.findOneAndUpdate(
+              {
+                _id: req.user._id,
+                "waitingListHistory.place": waitingListHistory.place,
+              },
+              {
+                $inc: {
+                  "waitingListHistory.$.attendance.left": 1,
+                  "waitingListHistory.$.rating": waitingListHistory.rating,
+                  "waitingListHistory.$.ratingDivider": numberToBeDivideWith,
+                },
+                $push: {
+                  "waitingListHistory.$.comments": waitingListHistory.comment,
+                },
+                $set: {
+                  "waitingListHistory.$.name": waitingListHistory.name,
+                },
+              },
+              { new: true }
+            );
+          }
+        } else {
+          const waitingListHistory = {
+            place: placeId,
+            rating: req.body.rating ? req.body.rating : 0,
+            comments: req.body.comment ? [req.body.comment] : [],
+            attendance: {
+              attended: 0,
+              left: 1,
+              missed: 0,
             },
-          },
-          { new: true }
-        );
+            name: place.name,
+          };
+
+          const guestList = await place.waitingList.map((el) => {
+            if (el.user) return el.user._id;
+          });
+
+          if (!guestList.includes(req.user._id))
+            throw `You are already removed from waiting list successfully !!`;
+
+          return User.findByIdAndUpdate(
+            req.user._id,
+            {
+              $push: {
+                waitingListHistory,
+              },
+            },
+            { new: true }
+          );
+        }
       })
       .then(async (user) => {
         await User.findByIdAndUpdate(req.user._id, {

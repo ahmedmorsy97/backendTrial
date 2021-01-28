@@ -75,15 +75,23 @@ const schema = new Schema(
           type: mongoose.Types.ObjectId,
           ref: "Places",
         },
+        ratingDivider: {
+          type: Number,
+          default: 0,
+        },
         rating: {
           type: Number,
+          default: 0,
         },
-        comment: {
-          type: String,
-        },
+        comments: [
+          {
+            type: String,
+          },
+        ],
         attendance: {
-          type: String,
-          enum: ["attended", "left", "missed"],
+          attended: { type: Number, default: 0 },
+          left: { type: Number, default: 0 },
+          missed: { type: Number, default: 0 },
         },
         name: {
           type: String,
@@ -92,7 +100,7 @@ const schema = new Schema(
         },
         createdAt: {
           type: Date,
-          defaut: moment().valueOf(),
+          default: moment().valueOf(),
         },
       },
     ],
