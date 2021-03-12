@@ -25,6 +25,10 @@ const schema = new Schema({
     type: Boolean,
     default: false,
   },
+  location: {
+    type: String,
+    default: null,
+  },
   placeId: {
     type: Number,
     index: true,
